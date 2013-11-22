@@ -14,10 +14,12 @@ endif
 RM = /bin/rm -f 
 
 all: raytrace
-raytrace: main.o Ray.o LocalGeo.o Transform.o Sample.o Sampler.o Intersection.o Primitive.o Sphere.o Tri.o Trinormal.o Camera.o Light.o PointLight.o DirectionalLight.o RayTracer.o Film.o
-	$(CC) $(CFLAGS) -fopenmp -o raytrace main.o Ray.o LocalGeo.o Transform.o Sample.o Sampler.o Intersection.o Primitive.o Sphere.o Tri.o Trinormal.o Camera.o Light.o PointLight.o DirectionalLight.o RayTracer.o Film.o $(LDFLAGS)
-main.o: main.cpp scene.cpp scene.h definitions.h Ray.h LocalGeo.h Transform.h Sample.h Sampler.h Intersection.h Primitive.h Sphere.h Tri.h Trinormal.h Camera.h Light.h PointLight.h DirectionalLight.h RayTracer.h Film.h variables.h
-	$(CC) $(CFLAGS) -fopenmp -c main.cpp 
+raytrace: main.o Scene.o Ray.o LocalGeo.o Transform.o Sample.o Sampler.o Intersection.o Primitive.o Sphere.o Tri.o Trinormal.o Camera.o Light.o PointLight.o DirectionalLight.o RayTracer.o Film.o
+	$(CC) $(CFLAGS) -fopenmp -o raytrace main.o Scene.o Ray.o LocalGeo.o Transform.o Sample.o Sampler.o Intersection.o Primitive.o Sphere.o Tri.o Trinormal.o Camera.o Light.o PointLight.o DirectionalLight.o RayTracer.o Film.o $(LDFLAGS)
+main.o: main.cpp Scene.h definitions.h Ray.h LocalGeo.h Transform.h Sample.h Sampler.h Intersection.h Primitive.h Sphere.h Tri.h Trinormal.h Camera.h Light.h PointLight.h DirectionalLight.h RayTracer.h Film.h variables.h
+	$(CC) $(CFLAGS) -fopenmp -c main.cpp
+Scene.o: Scene.cpp Scene.h definitions.h Ray.h LocalGeo.h Transform.h Sample.h Sampler.h Intersection.h Primitive.h Sphere.h Tri.h Trinormal.h Camera.h Light.h PointLight.h DirectionalLight.h RayTracer.h Film.h variables.h
+	$(CC) $(CFLAGS) -c Scene.cpp
 RayTracer.o: RayTracer.cpp RayTracer.h Ray.h LocalGeo.h Intersection.h Primitive.h Sphere.h Tri.h Trinormal.h definitions.h
 	$(CC) $(CFLAGS) -c RayTracer.cpp
 PointLight.o: PointLight.cpp PointLight.h Light.h Ray.h LocalGeo.h

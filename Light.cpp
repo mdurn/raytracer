@@ -16,3 +16,5 @@ Light::Light(vec3 _lightposn, vec3 _lightcolor) {
 vec3 Light::getLightPos() { return lightposn; }
 vec3 Light::getLightColor() { return lightcolor; }
 vec3 Light::getLightAttn() { return lightattn; }
+
+Light::~Light() {}

@@ -14,6 +14,7 @@ class Primitive {
   public:
     Primitive(vec3 ambient, vec3 diffuse, vec3 specular,
       vec3 emission, float shininess, mat4 transform);
+    virtual ~Primitive();
     virtual bool intersect(Ray& _ray, float* thit, Intersection* in) = 0;   
     virtual bool intersectP(Ray& ray) = 0;
     vec3 getAmbient();

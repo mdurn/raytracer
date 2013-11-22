@@ -12,6 +12,7 @@ class Light {
     enum Type { point, direction };
     Light(vec3 _lightposn, vec3 _lightcolor, vec3 _lightattn);
     Light(vec3 _lightposn, vec3 _lightcolor);
+    virtual ~Light();
     vec3 getLightPos();
     vec3 getLightColor();
     vec3 getLightAttn();

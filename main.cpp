@@ -1,4 +1,7 @@
-#include "scene.cpp"
+#include "Scene.h"
+// #ifdef _OPENMP
+// #include <omp.h>
+// #endif
 
 int main(int argc, char* argv[]) {
   //omp_lock_t lock;
@@ -9,31 +12,31 @@ int main(int argc, char* argv[]) {
     exit(-1); 
   }
 
-  cout << "READING FILE" << "\n";
-  readfile(argv[1]);
-  cout << "FINISHED READING FILE" << "\n";
+  cout << "Constructing Scene" << "\n";
+  Scene scene(argv[1]);
+  cout << "Finished Constructing Scene" << "\n";
 
-  Sampler sampler = Sampler(w, h);
-  RayTracer raytracer = RayTracer(maxdepth, primitives, lights);
-  Film film(w, h);
+  Sampler sampler = Sampler(scene.getW(), scene.getH());
+  RayTracer raytracer = RayTracer(scene.getMaxDepth(),
+    *(scene.getPrimitivesRef()), *(scene.getLightsRef()));
+  Film film(scene.getW(), scene.getH());
 
   cout << "Initialized RayTracer Variables" << "\n";
 
   //#pragma omp parallel for
-  for (int i = 0; i < w*h; ++i) {
+  for (int i = 0; i < scene.getW()*scene.getH(); ++i) {
     Ray ray;
     vec3 color;
     Sample sample;
 
     sampler.getSample(sample);
-    camera->generateRay(sample, &ray);
+    scene.getCamera().generateRay(sample, &ray);
     raytracer.trace(ray, 0, &color);
     film.commit(sample, color);
   }
   //omp_destroy_lock(&lock);
 
-  if (fname.empty()) { fname = (string)argv[1] + ".png"; }
-  film.writeImage(fname);
+  film.writeImage(scene.getFileName());
 
   return 0;
 }

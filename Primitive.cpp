@@ -25,3 +25,5 @@ vec3 Primitive::mat4TimesVec3(mat4 matrix, vec3 vec, float w) {
     vec3(v4[0]/v4.w, v4[1]/v4.w, v4[2]/v4.w);
   return transVec;
 }
+
+Primitive::~Primitive() {}

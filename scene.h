@@ -2,10 +2,7 @@
 
 #ifndef INCLUDES
 #define INCLUDES
-//still issues with multithreading
-// #ifdef _OPENMP
-// #include <omp.h>
-// #endif
+#include "definitions.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -13,7 +10,6 @@
 #include <deque>
 #include <stack>
 #include <vector>
-#include "definitions.h"
 #include "Ray.h"
 #include "LocalGeo.h"
 #include "Transform.h" 
@@ -30,12 +26,52 @@
 #include "DirectionalLight.h"
 #include "RayTracer.h"
 #include "Film.h"
-
-//global variables
-#include "variables.h"
 #endif
 
-void matransform (stack<mat4> &transfstack, float * values) ;
-void rightmultiply (const mat4 & M, stack<mat4> &transfstack) ;
-bool readvals (stringstream &s, const int numvals, float * values) ;
-void readfile (const char * filename) ;
+class Scene {
+  //filename
+  string fname;
+
+  //camera
+  vec3 eyeinit, upinit, center; 
+  int w, h; 
+  float fovy; 
+  Camera *camera;
+
+  // Raytracer settings
+  int maxdepth; // Max number of bounces (default 5)
+
+  // Geometry settings
+  int maxverts, numverts, maxvertnorms, numvertnorms;
+  vec3 *vertices, *normvertices;
+  struct vertexnormal {
+    vec3 v, n;
+  } *vertexnormals;
+
+  // Lighting
+  vector<Light*> lights;
+  vec3 attenuation; //default (1.0, 0.0, 0.0)
+
+  // Materials (read from file) 
+  // With multiple objects, these are colors for each.
+  vec3 ambient; //default (0.2, 0.2, 0.2)
+  vec3 diffuse, specular, emission; 
+  float shininess; 
+
+  // Primitives  
+  vector<Primitive*> primitives; 
+
+  public:
+    Scene(const char* filename);
+    ~Scene();
+    void rightmultiply (const mat4 &M, stack<mat4> &transfstack);
+    bool readvals (stringstream &s, const int numvals, float* values);
+    void readfile (const char* filename);
+    int getW();
+    int getH();
+    int getMaxDepth();
+    vector<Primitive*>* getPrimitivesRef();
+    vector<Light*>* getLightsRef();
+    Camera getCamera();
+    string getFileName();
+};

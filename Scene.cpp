@@ -4,6 +4,8 @@ Scene::Scene(const char* filename) {
   maxdepth = 5;
   attenuation = vec3(1.0, 0.0, 0.0);
   ambient = vec3(0.2, 0.2, 0.2);
+  numverts = 0;
+  numvertnorms = 0;
   readfile(filename);
   if (fname.empty()) { fname = (string) filename  + ".png"; }
 }
@@ -33,7 +35,7 @@ void Scene::readfile(const char* filename)
   in.open(filename); 
   if (in.is_open()) {
 
-    stack <mat4> transfstack; 
+    stack<mat4> transfstack; 
     transfstack.push(mat4(1.0));  // identity
 
     getline (in, str); 

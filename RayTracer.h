@@ -18,7 +18,7 @@
 typedef glm::vec3 vec3;
 
 class RayTracer {
-  const int maxdepth;
+  int maxdepth;
   vector<Primitive*>* primitives;
   vector<Light*>* lights;
   public:

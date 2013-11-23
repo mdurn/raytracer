@@ -23,8 +23,8 @@ bool Tri::intersect(Ray& _ray, float* thit, Intersection* in) {
 
   p = ray.getPos() + ray.getDir() * t;
   w = p - a;
-  vec3 vCrossW = glm::cross(v, w);
-  vec3 uCrossW = glm::cross(u, w);
+  vCrossW = glm::cross(v, w);
+  uCrossW = glm::cross(u, w);
 
   if (glm::dot(vCrossW, vCrossU) < 0) { return false; }
   if (glm::dot(uCrossW, uCrossV) < 0) { return false; }

@@ -1,42 +1,60 @@
 #include "Scene.h"
-// #ifdef _OPENMP
-// #include <omp.h>
-// #endif
+#ifdef _OPENMP
+#include <omp.h>
+#else
+#define omp_get_max_threads() 1
+#define omp_get_thread_num() 0
+#endif
 
 int main(int argc, char* argv[]) {
-  //omp_lock_t lock;
-  //omp_init_lock(&lock);
-
   if (argc < 1) {
     cerr << "Usage: raytrace inputfile.test\n"; 
     exit(-1); 
   }
 
+  int maxThreads = omp_get_max_threads();
+
   cout << "Constructing Scene" << "\n";
-  Scene scene(argv[1]);
+
+  vector<Scene*> scenes;
+  vector<RayTracer*> raytracers;
+  for (int i = 0; i < maxThreads; i++ ) {
+    Scene *scene = new Scene(argv[1]);
+    scenes.push_back(scene);
+    RayTracer* raytracer = new RayTracer(scenes[i]->getMaxDepth(),
+      *(scenes.back()->getPrimitivesRef()),
+      *(scenes.back()->getLightsRef()));
+    raytracers.push_back(raytracer);
+  }
+
+  int w = scenes[0]->getW();
+  int h = scenes[0]->getH();
+
   cout << "Finished Constructing Scene" << "\n";
 
-  Sampler sampler = Sampler(scene.getW(), scene.getH());
-  RayTracer raytracer = RayTracer(scene.getMaxDepth(),
-    *(scene.getPrimitivesRef()), *(scene.getLightsRef()));
-  Film film(scene.getW(), scene.getH());
+  Sampler sampler = Sampler(w, h);
+  Film film(w, h);
 
   cout << "Initialized RayTracer Variables" << "\n";
 
-  //#pragma omp parallel for
-  for (int i = 0; i < scene.getW()*scene.getH(); ++i) {
+  #pragma omp parallel for
+  for (int i = 0; i < w*h; ++i) {
     Ray ray;
     vec3 color;
     Sample sample;
+    int threadNum = omp_get_thread_num();
 
+    #pragma omp critical
     sampler.getSample(sample);
-    scene.getCamera().generateRay(sample, &ray);
-    raytracer.trace(ray, 0, &color);
+
+    scenes[threadNum]->getCamera().generateRay(sample, &ray);
+    raytracers[threadNum]->trace(ray, 0, &color);
+
+    #pragma omp critical
     film.commit(sample, color);
   }
-  //omp_destroy_lock(&lock);
 
-  film.writeImage(scene.getFileName());
+  film.writeImage(scenes[0]->getFileName());
 
   return 0;
 }

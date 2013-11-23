@@ -8,8 +8,8 @@
 
 int main(int argc, char* argv[]) {
   if (argc < 1) {
-    cerr << "Usage: raytrace inputfile.test\n"; 
-    exit(-1); 
+    cerr << "Usage: raytrace inputfile.test\n";
+    exit(-1);
   }
 
   int maxThreads = omp_get_max_threads();

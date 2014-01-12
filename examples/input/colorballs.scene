@@ -1,0 +1,55 @@
+#usc scene
+
+size 640 480
+camera 0 9 15 0 0 -30 0 1 0 45
+output scene_5_balls_usc.png
+
+maxdepth 5
+
+ambient 0.1 0.1 0.1
+
+#attenuation 1 0.1 0.05
+
+point 0.0 10.0 -35.0 1 1 1
+
+pushTransform
+
+#sphere 1
+diffuse 0.783099 0.394383 0.840188
+specular 0.500000 0.500000 0.500000
+shininess 10.0
+
+pushTransform
+translate -20.0 0.0 -35.0
+sphere 0 0 0 5
+popTransform
+
+#sphere2
+diffuse 0.197551 0.911647 0.798440
+specular 0.500000 0.500000 0.500000
+shininess 10.0
+
+pushTransform
+translate -10.0 0.0 -35.0
+sphere 0 0 0 5
+popTransform
+
+#sphere3
+diffuse 0.277775 0.768230 0.335223
+specular 0.500000 0.500000 0.500000
+shininess 10.000000
+
+pushTransform
+translate 0.000000 0.000000 -35.000000
+sphere 0 0 0 5
+popTransform
+
+#sphere4
+diffuse 0.628871 0.477397 0.553970
+specular 0.500000 0.500000 0.500000
+shininess 10.000000
+
+pushTransform
+translate 10.000000 0.000000 -35.000000
+sphere 0 0 0 5
+popTransform

@@ -13,7 +13,7 @@ make
   GCC 4.6 can be installed via homebrew (brew install gcc-4.6). Due to the
   dependencies, other compilers may fail.
 * Issues may arise with an incompatible freeimage library. If this occurs, 
-  install freeimage (brew install freeimage) and replace the freeimage.a file
+  install freeimage (brew install freeimage) and replace the libfreeimage.a file
   contained in the repository.
 
 ## Execution

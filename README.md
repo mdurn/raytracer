@@ -31,3 +31,8 @@ OMP_NUM_THREADS=$num_threads raytrace input.scene
 * Example input files are located in "examples/input/".
 * Output files will be written into the same directory as the input file as PNGs.
 * Example output files are located in "examples/output/"
+
+## Examples
+
+* Examples of input text files can be found in examples/input
+* Examples of output images can be found in examples/output
